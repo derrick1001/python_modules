@@ -14,6 +14,13 @@ def cx_detail(e9, ont_id):
     return response
 
 
+def ont_detail(e9, ont_id):
+    ont = get(f'https://10.20.7.10:18443/rest/v1/performance/device/{e9}/ont/{ont_id}/status',
+              auth=('admin', 'Thesearethetimes!'),
+              verify=False)
+    return ont
+
+
 def ssp():
     from crayon import c_BLUE, c_WHITE
 
@@ -24,7 +31,7 @@ def ssp():
     return shelf, slot, port
 
 
-def netcon(shelf, slot, port):
+def netcon():
     device = {
         "device_type": "cisco_ios",
         "host": f"{argv[1]}",
