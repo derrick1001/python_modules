@@ -12,6 +12,12 @@ def affected_decorator(func):
         account = (cx(kwargs.get('e9'), id) for id in ont_ids)
         for sub in account:
             try:
+                name = sub.get("name")
+                if name is None:
+                    continue
+            except Exception:
+                pass
+            try:
                 phone = sub.get("locations")[0].get("contacts")[0].get("phone")
             except Exception:
                 phone = "No phone"
@@ -30,7 +36,6 @@ def affected_decorator(func):
                     "streetLine1") + ', ' + sub.get("locations")[0].get("address")[0].get("city")
             except Exception:
                 loc = 'No address'
-            name = sub.get("name")
             acct = sub.get("customId")
             print(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n")
         return
