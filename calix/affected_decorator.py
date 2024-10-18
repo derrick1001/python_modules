@@ -13,30 +13,21 @@ def affected_decorator(func):
         for sub in account:
             try:
                 name = sub.get("name")
-                if name is None:
-                    continue
-            except Exception:
-                pass
-            try:
+                acct = sub.get("customId")
                 phone = sub.get("locations")[0].get("contacts")[0].get("phone")
-            except Exception:
-                phone = "No phone"
-            else:
-                if phone is None:
-                    phone = "No phone"
-            try:
                 em = sub.get("locations")[0].get("contacts")[0].get("email")
-            except Exception:
-                em = "No email"
-            else:
-                if em is None:
-                    em = "No email"
-            try:
                 loc = sub.get("locations")[0].get("address")[0].get(
                     "streetLine1") + ', ' + sub.get("locations")[0].get("address")[0].get("city")
             except Exception:
-                loc = 'No address'
-            acct = sub.get("customId")
+                if name or acct is None:
+                    continue
+            else:
+                if phone is None or phone == "":
+                    phone = 'No phone'
+                if em is None or em == "":
+                    em = 'No email'
+                if loc is None or loc == "":
+                    loc = 'No location'
             print(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n")
         return
 
