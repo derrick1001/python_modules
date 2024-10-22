@@ -1,19 +1,10 @@
 from calix.cx_detail import cx
 from calix.affected import affected
+from calix.path import cvec_alrms
 
 # NOTE:
-#   This decaorator takes in the instance-id from
-#   the alarm table, along with the ont-id and will
-#   put together a list of customers that are without
-#   service. It can be used with any function that
-#   processes alarms and needs to get the affected
-#   subscribers from the hyperlink. It also uses
-#   the ont-id to get the phone number if applicable.
-
-# WARN:
-#   The API call 'affected', does not align with the active alarm table
-#   and shouldnt be used. Rewrite using the 'cx_detail' module and make the
-#   list yourself
+#   Debating on what to do once code is churned through this
+#   decorator. Write to file and reuse later?
 
 
 def affected_decorator(func):
