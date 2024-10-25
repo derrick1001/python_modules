@@ -10,7 +10,7 @@ def ont(e9, ont_id):
     e9: str
     ont_id: str
 
-    Ex: cx('hostname', '1111')
+    Ex: ont('hostname', '1111')
     *************************
     """
     ont_detail = get(
