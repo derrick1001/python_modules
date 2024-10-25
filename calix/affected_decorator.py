@@ -39,6 +39,7 @@ def affected_decorator(func):
                     loc = "No location"
                 port = next(pon_ports)
             print(f"{acct}\n{name}\n{phone}\n{port}\n{em}\n{loc}\n")
+        print(len(ont_ids), 'Alarms')
         return
 
     return inner
