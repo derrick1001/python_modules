@@ -34,8 +34,7 @@ def affected_decorator(func):
                 if loc is None or loc == "":
                     loc = "No location"
                 port = next(pon_ports)
-            print(f"{acct}\n{name}\n{phone}\n{port}\n{em}\n{loc}\n")
+            yield f"{acct}\n{name}\n{phone}\n{port}\n{em}\n{loc}\n"
         print(len(ont_ids), "Alarms")
-        return
 
     return inner
