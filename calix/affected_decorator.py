@@ -1,6 +1,5 @@
 from calix.cx_detail import cx
 from calix.ont_detail import ont
-from calix.path import cvec_alrms
 
 # NOTE:
 #   Debating on what to do once code is churned through this
