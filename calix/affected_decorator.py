@@ -8,9 +8,14 @@ from calix.ont_detail import ont
 
 def affected_decorator(func):
     def inner(*args, **kwargs):
+        print(kwargs)
         ont_ids = func()
-        pon_ports = (ont(kwargs.get("e9"), id).get("linked-pon") for id in ont_ids)
-        account = (cx(kwargs.get("e9"), id) for id in ont_ids)
+        pon_ports = (
+            ont(kwargs.get("e9"), id).get("linked-pon")
+            for id in ont_ids
+            if id is not None
+        )
+        account = (cx(kwargs.get("e9"), id) for id in ont_ids if id is not None)
         for sub in account:
             try:
                 name = sub.get("name")
