@@ -1,14 +1,9 @@
 from calix.cx_detail import cx
 from calix.ont_detail import ont
 
-# NOTE:
-#   Debating on what to do once code is churned through this
-#   decorator. Write to file and reuse later?
-
 
 def affected_decorator(func):
     def inner(*args, **kwargs):
-        print(kwargs)
         ont_ids = func()
         pon_ports = (
             ont(kwargs.get("e9"), id).get("linked-pon")
