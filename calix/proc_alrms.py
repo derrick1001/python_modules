@@ -23,8 +23,10 @@ def proc_alarms(func):
                 )
                 for port in pon_port
             ]
-            print(sub_on_port)
-            ont_id = [re.search("[0-9]{1,5}", id) for id in sub_on_port]
+            match_ont = [re.search("[0-9]{1,5}", id) for id in sub_on_port]
+            ont_id = [
+                m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
+            ]
             return ont_id
         else:
             match_ont = [
