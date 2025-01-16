@@ -5,7 +5,6 @@ from calix.ont_detail import ont
 def affected_decorator(func):
     def inner(*args, **kwargs):
         ont_ids = func()
-        print(ont_ids)
         pon_ports = (
             ont(kwargs.get("e9"), id).get("linked-pon")
             for id in ont_ids
