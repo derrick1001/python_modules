@@ -17,7 +17,7 @@ def get_fibers(pon_port: list):
         ]
     except IndexError:
         cnct.disconnect()
-        return None
+        return "Not configured"
     cnct.send_command_timing("top")
     fibers = (fiber for fiber in fibers)
     return fibers
