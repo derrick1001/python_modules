@@ -29,11 +29,11 @@ def proc_alarms(func):
             return ont_id
         else:
             match_ont = [
-                re.search("'[0-9]{1,5}'", alrm) for alrm in alrm_tbl.split("\n")
+                re.search("'[0-9]{3,5}'", alrm) for alrm in alrm_tbl.split("\n")
             ]
             ont_id = [
                 m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
             ]
-            return ont_id
+            yield ont_id
 
     return inner
