@@ -1,17 +1,15 @@
 from requests import get
 
 
-# NOTE: Returns dict of customer detail
 def cx(e9, ont_id):
     """
-    *************************
-    This function requires the E9 hostname and the ONT id
+    This function gets subscriber info using the ONT id
 
-    e9: str
-    ont_id: str
+    Parameters
+        e9: str
+        ont_id: str
 
-    Ex: cx('hostname', '1111')
-    *************************
+    Returns dictionary of all subscriber data
     """
     cx_detail = get(
         f"https://10.20.7.10:18443/rest/v1/ems/subscriber/device/{e9}/port/{ont_id}%2Fx1",

@@ -3,6 +3,16 @@ from calix.pon_ports import get_pon_fibers
 
 
 def affected_decorator(func):
+    """
+    This function parses out the list or lists of
+    ids from the proc_alarms function
+
+    Parameters
+        decorator function
+
+    Yields an f-string of the subscriber data
+    """
+
     def inner(*args, **kwargs):
         ont_ids = func()
         for ont in ont_ids:

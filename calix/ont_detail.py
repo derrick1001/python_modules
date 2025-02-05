@@ -1,17 +1,15 @@
 from requests import get
 
 
-# NOTE: Returns dict of ont detail
 def ont(e9, ont_id):
     """
-    *************************
-    This function requires the E9 hostname and the ONT id
+    This function gets ONT detail using the ONT id
 
-    e9: str
-    ont_id: str
+    Parameters
+        e9: str
+        ont_id: str
 
-    Ex: ont('hostname', '1111')
-    *************************
+    Returns dictionary of all ONT data
     """
     ont_detail = get(
         f"https://10.20.7.10:18443/rest/v1/performance/device/{e9}/ont/{ont_id}/status",

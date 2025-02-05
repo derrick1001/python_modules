@@ -5,6 +5,19 @@ from calix.connection import calix_e9
 
 
 def proc_alarms(func):
+    """
+    This function processes the alarm table
+    by matching the pon port or ONT id
+    from the alarm and making a data
+    structure from it
+
+    Parameters
+        This is a decorator function and
+        takes in another function as its arg
+
+    Returns a generator object of list or lists or ids
+    """
+
     @affected_decorator
     def inner(**kwargs):
         alrm_tbl = func()
