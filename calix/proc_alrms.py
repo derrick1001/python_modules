@@ -38,7 +38,6 @@ def proc_alarms(func):
             )
             pattern = re.compile(r"[0-9]{3,5}")
             ont_ids = (pattern.findall(id) for id in sub_on_port)
-            print(next(ont_ids))
             return ont_ids
         else:
             match_ont = [

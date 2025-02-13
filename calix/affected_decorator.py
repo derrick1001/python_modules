@@ -15,6 +15,7 @@ def affected_decorator(func):
 
     def inner(*args, **kwargs):
         ont_ids = func()
+        print(ont_ids)
         for ont in ont_ids:
             pon_ports, fibers = get_pon_fibers(ont, kwargs.get("e9"))
             account = (cx(kwargs.get("e9"), id) for id in ont if id is not None)
