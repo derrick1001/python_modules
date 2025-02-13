@@ -16,4 +16,7 @@ def ont(e9, ont_id):
         auth=("admin", "Thesearethetimes!"),
         verify=False,
     )
-    return ont_detail.json()
+    if isinstance(ont_detail.json(), list):
+        return "ONT does not exist"
+    elif isinstance(ont_detail.json(), dict):
+        return ont_detail.json()

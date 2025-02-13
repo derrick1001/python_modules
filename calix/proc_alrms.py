@@ -33,13 +33,13 @@ def proc_alarms(func):
             sub_on_port = (
                 cnct.send_command_timing(
                     f"show interface pon {port} subscriber-info | display curly-braces | inc ont-id",
-                    strip_prompt=True,
                 )
                 for port in pon_port
             )
             pattern = re.compile(r"[0-9]{3,5}")
-            ont_id = (pattern.findall(id) for id in sub_on_port)
-            return ont_id
+            ont_ids = (pattern.findall(id) for id in sub_on_port)
+            print(next(ont_ids))
+            return ont_ids
         else:
             match_ont = [
                 re.search("'[0-9]{3,5}'", alrm) for alrm in alrm_tbl.split("\n")
