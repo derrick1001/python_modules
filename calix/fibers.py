@@ -13,15 +13,21 @@ def get_fibers(pon_port: list):
     """
     cnct = calix_e9()
     cnct.send_command_timing("configure")
-    try:
-        fibers = [
-            cnct.send_command_timing(
-                f"show full-configuration interface pon {port} | inc description"
-            ).split()[1]
-            for port in pon_port
-        ]
-    except IndexError:
-        cnct.disconnect()
-        return "Not configured"
-    cnct.send_command_timing("top")
+    fibers = []
+    for port in pon_port:
+        try:
+            fibers.append(
+                cnct.send_command_timing(
+                    f"show full-configuration interface pon {port} | inc description"
+                ).split()[1]
+            )
+            # fibers = [
+            #    cnct.send_command_timing(
+            #        f"show full-configuration interface pon {port} | inc description"
+            #    ).split()[1]
+            #    for port in pon_port
+            # ]
+        except IndexError:
+            fibers.append("Not configured")
+    cnct.disconnect()
     return fibers
