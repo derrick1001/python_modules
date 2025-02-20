@@ -32,20 +32,20 @@ def proc_alarms(func):
             cnct = calix_e9()
             sub_on_port = (
                 cnct.send_command_timing(
-                    f"show interface pon {port} subscriber-info | display curly-braces | inc ont-id",
+                    f"show interface pon {
+                        port} subscriber-info | display curly-braces | inc ont-id",
                 )
                 for port in pon_port
             )
-            pattern = re.compile(r"[0-9]{3,5}")
-            ont_ids = (pattern.findall(id) for id in sub_on_port)
-            return ont_ids
+            ont_ids = [id.rstrip(";") for id in next(sub_on_port).split()[1::2]]
+            yield ont_ids
         else:
             match_ont = [
                 re.search("'[0-9]{3,5}'", alrm) for alrm in alrm_tbl.split("\n")
             ]
-            ont_id = [
+            ont_ids = [
                 m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
             ]
-            yield ont_id
+            yield ont_ids
 
     return inner
