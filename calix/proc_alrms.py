@@ -32,8 +32,7 @@ def proc_alarms(func):
             cnct = calix_e9()
             sub_on_port = (
                 cnct.send_command_timing(
-                    f"show interface pon {
-                        port} subscriber-info | display curly-braces | inc ont-id",
+                    f"show interface pon {port} subscriber-info | display curly-braces | inc ont-id",
                 )
                 for port in pon_port
             )
