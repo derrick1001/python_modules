@@ -8,7 +8,7 @@ def email(subj: str, cont) -> None:
     msg["Subject"] = subj
     msg["From"] = "nms@mycvecfiber.com"
     msg["To"] = "dishman@cvecfiber.com"
-    if "Loss of PON" not in subj:
+    if "PON" not in subj:
         msg["Cc"] = ["kmarshala@cvecfiber.com", "jjackson@cvecfiber.com"]
     s = smtplib.SMTP("10.20.7.31")
     s.send_message(msg)

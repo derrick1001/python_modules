@@ -21,7 +21,7 @@ def proc_alarms(func):
     @affected_decorator
     def inner(**kwargs):
         alrm_tbl = func()
-        if "loss-of-pon" in alrm_tbl:
+        if "loss-of-pon" or "pon-mac-degraded" in alrm_tbl:
             match_pon = (
                 re.search("[2-5]/[1-2]/xp[0-9]{1,2}", alrm)
                 for alrm in alrm_tbl.split("\n")
