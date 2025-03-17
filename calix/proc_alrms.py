@@ -36,7 +36,7 @@ def proc_alarms(func):
                 )
                 for port in pon_port
             )
-            ont_ids = [id.rstrip(";") for id in next(sub_on_port).split()[1::2]]
+            ont_ids = [id.replace(";", "").split()[1::2] for id in sub_on_port]
             yield ont_ids
         else:
             match_ont = [
