@@ -34,10 +34,12 @@ def proc_alarms(func):
                 cnct.send_command_timing(
                     f"show interface pon {port} subscriber-info | display curly-braces | inc ont-id",
                 )
+                .replace(";", "")
+                .split()[1::2]
                 for port in pon_port
             )
-            ont_ids = [id.replace(";", "").split()[1::2] for id in sub_on_port]
-            yield ont_ids
+            for ont_ids in sub_on_port:
+                yield ont_ids
         else:
             match_ont = [
                 re.search("'[0-9]{2,5}'", alrm) for alrm in alrm_tbl.split("\n")
