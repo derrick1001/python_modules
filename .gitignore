@@ -1,2 +1,3 @@
-__pycache__/
-calix/__pycache__/
+__pycache__/*
+calix/__pycache__/*
+plume/__pycache__/*

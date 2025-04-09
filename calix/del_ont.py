@@ -17,3 +17,4 @@ def del_ont(id: str, e9: str = "CVEC-E9-1"):
         auth=("admin", "Thesearethetimes!"),
         verify=False,
     )
+    return del_ont
