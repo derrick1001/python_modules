@@ -3,7 +3,7 @@
 from requests import delete
 
 
-def del_ont(id: str, e9: str = "CVEC-E9-1"):
+def del_ont(id: str, e9: str):
     """
     API DELETE method that deletes the given ONT id
 
@@ -17,4 +17,4 @@ def del_ont(id: str, e9: str = "CVEC-E9-1"):
         auth=("admin", "Thesearethetimes!"),
         verify=False,
     )
-    return del_ont
+    return del_ont.json()
