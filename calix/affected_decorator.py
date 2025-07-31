@@ -15,6 +15,7 @@ def affected_decorator(func):
 
     def inner(*args, **kwargs):
         ont_ids = func()
+        subs = set()
         for ont in ont_ids:
             pon_ports, fibers = get_pon_fibers(ont, kwargs.get("e9"))
             account = (cx(kwargs.get("e9"), id) for id in ont if id is not None)
@@ -41,6 +42,7 @@ def affected_decorator(func):
                         loc = "No location"
                     port = next(pon_ports)
                     fiber = next(fibers)
-                yield f"{acct}\n{name}\n{phone}\n{port} -> {fiber}\n{em}\n{loc}\n"
+                subs.add(f"{acct}\n{name}\n{phone}\n{port} -> {fiber}\n{em}\n{loc}\n")
+        return subs
 
     return inner
