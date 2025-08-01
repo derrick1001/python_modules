@@ -1,7 +1,7 @@
 from netmiko import ConnectHandler
 
 
-class E9:
+class CalixE9:
     def __init__(self, ip: str, name: str):
         self.ip = ip
         self.name = name
