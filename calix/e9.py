@@ -20,3 +20,12 @@ class CalixE9:
         ]
         run_cmds = self.connection.send_command_timing(cmds[0])
         return run_cmds
+
+    def count_subs_port(self, port):
+        cmds = (
+            f"show int pon {port} subscriber-info | notab | inc subscriber-id | count"
+        )
+        run_cmds = int(
+            self.connection.send_command_timing(cmds, strip_prompt=True).split()[1]
+        )
+        return run_cmds
