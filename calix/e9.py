@@ -14,14 +14,14 @@ class CalixE9:
         }
         self.connection = ConnectHandler(**self.device)
 
-    def backup(self):
+    def backup(self) -> None:
         cmds = [
             f"copy config from startup-config to {self.name}.xml\nupload file config from-file {self.name}.xml to-URI scp://derrick@10.20.0.219:/home/derrick/Documents/CVEC_Stuff/configs/calix_configs/ password Guitarpro2"
         ]
         run_cmds = self.connection.send_command_timing(cmds[0])
         return run_cmds
 
-    def count_subs_port(self, port):
+    def count_subs_port(self, port: str) -> int:
         cmds = (
             f"show int pon {port} subscriber-info | notab | inc subscriber-id | count"
         )
