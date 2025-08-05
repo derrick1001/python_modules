@@ -14,9 +14,9 @@ class CalixE9:
         }
         self.connection = ConnectHandler(**self.device)
 
-    def backup(self) -> None:
+    def backup(self, remote_path: str, passwd: str) -> None:
         cmds = [
-            f"copy config from startup-config to {self.name}.xml\nupload file config from-file {self.name}.xml to-URI scp://derrick@10.20.0.219:/home/derrick/Documents/CVEC_Stuff/configs/calix_configs/ password Guitarpro2"
+            f"copy config from startup-config to {self.name}.xml\nupload file config from-file {self.name}.xml to-URI scp://{remote_path} password {passwd}"
         ]
         run_cmds = self.connection.send_command_timing(cmds[0])
         return run_cmds
