@@ -9,7 +9,11 @@ def email(subj: str, cont) -> None:
     msg["From"] = "nms@mycvecfiber.com"
     msg["To"] = "dishman@cvecfiber.com"
     if "PON" not in subj:
-        msg["Cc"] = ["kmarshala@cvecfiber.com", "jjackson@cvecfiber.com"]
+        msg["Cc"] = [
+            "kmarshala@cvecfiber.com",
+            "jjackson@cvecfiber.com",
+            "jailey@cvecfiber.com",
+        ]
     s = smtplib.SMTP("10.20.7.31")
     s.send_message(msg)
     s.quit()
