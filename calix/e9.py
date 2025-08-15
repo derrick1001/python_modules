@@ -22,10 +22,22 @@ class CalixE9:
         return run_cmds
 
     def count_subs_port(self, port: str) -> int:
-        cmds = (
-            f"show int pon {port} subscriber-info | notab | inc subscriber-id | count"
-        )
+        cmd = f"show int pon {port} subscriber-info | notab | inc subscriber-id | count"
         run_cmds = int(
-            self.connection.send_command_timing(cmds, strip_prompt=True).split()[1]
+            self.connection.send_command_timing(cmd, strip_prompt=True).split()[1]
         )
         return run_cmds
+
+    def ssp(self, shelf: str, slot="", port="") -> list[str]:
+        if slot == "":
+            slot_range = range(1, 3)
+        else:
+            slot_range = slot
+        if "-" in port:
+            port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1)
+        else:
+            port_range = range(1, 17)
+        ranges = [
+            f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range
+        ]
+        return ranges
