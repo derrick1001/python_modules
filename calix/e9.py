@@ -41,3 +41,28 @@ class CalixE9:
             f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range
         ]
         return ranges
+
+    def light(self, port: str) -> tuple[list, str]:
+        from calix.cx_detail import cx
+        from calix.ont_detail import ont
+        from fibers import ORANGE, GREEN, YELLOW, ROSE, AQUA
+
+        ont_ids = self.connection.send_command_timing(
+            f"sh int pon {port} ranged-onts statistics | inc ont-id"
+        ).split()[1::2]
+        module_len = self.connection.send_command_timing(
+            f"show int pon {port} module | inc smf-fiber"
+        ).split('"')[1]
+        subs = []
+        for onts in ont_ids:
+            cx_info = cx(self.name, onts)
+            ont_info = ont(self.name, onts)
+            name = cx_info.get("name")
+            sn = ont_info.get("serial-number")
+            distance = ont_info.get("range-length")
+            us_light = ont_info.get("ne-opt-signal-level")
+            us_ber = ont_info.get("us-sdber-rate")
+            subs.append(
+                f"{AQUA}{sn}{YELLOW}{float(us_light):>10.2f}{YELLOW}{us_ber:>10}{GREEN}{distance / 1000:>10.1f}km{ROSE}{name:>30}\n"
+            )
+        return subs, f"{ORANGE}{module_len}"

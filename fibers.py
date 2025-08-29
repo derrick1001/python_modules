@@ -4,6 +4,18 @@ from random import choice
 
 RESET = Style.reset
 BOLD = Style.BOLD
+BLUE = f"{Fore.rgb(83, 83, 255)}{BOLD}"
+ORANGE = f"{Fore.rgb(255, 128, 0)}{BOLD}"
+GREEN = f"{Fore.rgb(0, 204, 0)}{BOLD}"
+BROWN = f"{Fore.rgb(128, 64, 0)}{BOLD}"
+SLATE = f"{Fore.rgb(128, 128, 128)}{BOLD}"
+WHITE = f"{Fore.rgb(255, 255, 255)}{BOLD}"
+RED = f"{Fore.rgb(255, 0, 0)}{BOLD}"
+BLACK = f"{Fore.rgb(100, 100, 100)}"
+YELLOW = f"{Fore.rgb(255, 255, 0)}{BOLD}"
+VIOLET = f"{Fore.rgb(128, 0, 255)}{BOLD}"
+ROSE = f"{Fore.rgb(255, 128, 192)}{BOLD}"
+AQUA = f"{Fore.rgb(0, 255, 255)}{BOLD}"
 
 
 def setup(tube: str) -> None:
@@ -178,7 +190,7 @@ def setup(tube: str) -> None:
     #    return aqua, aqua_tube
 
 
-def main():
+def main(color):
     colors = [
         "blue",
         "orange",
@@ -193,15 +205,14 @@ def main():
         "rose",
         "aqua",
     ]
-    color_practice = input("Choose a color tube to practice on: ")
     sleep(1)
-    if isinstance(color_practice, str) is False:
+    if isinstance(color, str) is False:
         print("Please use a color from the 12 fiber colors, ex: blue")
         sleep(1)
-        main()
-    elif color_practice not in colors:
+        main(color)
+    elif color not in colors:
         print("Please use a color from the 12 fiber colors, ex: blue")
-    fiber_num, tube = setup(color_practice)
+    fiber_num, tube = setup(color)
     count = 0
     while count < 10:
         question = choice(fiber_num)
@@ -210,10 +221,15 @@ def main():
         if guess == tube[question]:
             print(f"{Fore.rgb(0, 204, 0)}{BOLD}CORRECT!!{RESET}\n")
         else:
-            print(f"{Fore.rgb(255, 0, 0)}{BOLD}WRONG!!{RESET}\n")
+            print(f"{Fore.rgb(255, 0, 0)}{BOLD}WRONG!!{RESET}")
+            sleep(1)
+            print(f"Correct answser was {tube[question]}")
         sleep(1)
         count += 1
 
 
 if __name__ == "__main__":
-    main()
+    print("This only works with blue, orange, and green tubes at the moment")
+    sleep(1)
+    color = input("Choose a color tube to practice on: ")
+    main(color)
