@@ -17,4 +17,4 @@ def rmont(id: str, e9: str):
         auth=("admin", "Thesearethetimes!"),
         verify=False,
     )
-    return del_ont.status_code
+    return del_ont.status_code, del_ont.json()

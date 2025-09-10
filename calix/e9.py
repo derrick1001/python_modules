@@ -28,7 +28,8 @@ class CalixE9:
         )
         return run_cmds
 
-    def ssp(self, shelf: str, slot="", port="") -> list[str]:
+    @staticmethod
+    def ssp(shelf: str, slot="", port="") -> list[str]:
         if slot == "":
             slot_range = range(1, 3)
         else:
@@ -45,7 +46,7 @@ class CalixE9:
     def light(self, port: str) -> tuple[list, str]:
         from calix.cx_detail import cx
         from calix.ont_detail import ont
-        from fibers import ORANGE, GREEN, YELLOW, ROSE, AQUA
+        from fiber_colors import ORANGE, GREEN, YELLOW, ROSE, AQUA
 
         ont_ids = self.connection.send_command_timing(
             f"sh int pon {port} ranged-onts statistics | inc ont-id"
@@ -66,3 +67,23 @@ class CalixE9:
                 f"{AQUA}{sn}{YELLOW}{float(us_light):>10.2f}{YELLOW}{us_ber:>10}{GREEN}{distance / 1000:>10.1f}km{ROSE}{name:>30}\n"
             )
         return subs, f"{ORANGE}{module_len}"
+
+    def alrm_maj(self) -> list:
+        major = self.connection.send_command_timing("show alarm active | inc MAJOR")
+        return major.split("\n")
+
+    def alrm_crit(self) -> list:
+        critical = self.connection.send_command_timing(
+            "show alarm active | inc CRITICAL"
+        )
+        return critical.split("\n")
+
+    def loss_of_signal(self) -> list:
+        from re import search
+
+        alarm = self.alrm_maj()
+        m = (
+            search("1/[1-2]/q[1-2]", port) for port in alarm if "loss-of-signal" in port
+        )
+        ports = [port.group() for port in m]
+        return ports

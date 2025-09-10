@@ -14,6 +14,6 @@ def email(subj: str, cont) -> None:
             "jjackson@cvecfiber.com",
             "jailey@cvecfiber.com",
         ]
-    s = smtplib.SMTP("10.20.7.31")
+    s = smtplib.SMTP("10.20.17.31")
     s.send_message(msg)
     s.quit()
