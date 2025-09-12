@@ -78,6 +78,16 @@ class CalixE9:
         )
         return critical.split("\n")
 
+    def description(self, port: str) -> str:
+        try:
+            desc = self.connection.send_command_timing(
+                f"show interface ethernet {port} status | include description",
+                strip_prompt=True,
+            ).split()[1]
+        except IndexError:
+            return "No description"
+        return desc
+
     def loss_of_signal(self) -> list:
         from re import search
 
