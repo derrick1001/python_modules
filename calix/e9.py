@@ -1,4 +1,5 @@
 from netmiko import ConnectHandler
+from typing import Generator
 
 
 class CalixE9:
@@ -43,6 +44,48 @@ class CalixE9:
         ]
         return ranges
 
+    def onts(self, port: str) -> list[str]:
+        ont_ids = self.connection.send_command_timing(
+            f"sh int pon {port} ranged-onts statistics | inc ont-id"
+        ).split()[1::2]
+        return ont_ids
+
+    def subs(self, onts: list) -> Generator:
+        from calix.cx_detail import cx
+        from calix.ont_detail import ont
+
+        subscribers = set()
+        for id in onts:
+            cx_info = cx(self.name, id)
+            ont_info = ont(self.name, id)
+            try:
+                name = cx_info.get("name")
+                acct = cx_info.get("customId")
+                phone = cx_info.get("locations")[0].get("contacts")[0].get("phone")
+                em = cx_info.get("locations")[0].get("contacts")[0].get("email")
+                loc = (
+                    cx_info.get("locations")[0].get("address")[0].get("streetLine1")
+                    + ", "
+                    + cx_info.get("locations")[0].get("address")[0].get("city")
+                )
+                port = ont_info.get("linked-pon")
+                fibers = CalixE9.description(self, port, "pon")
+            except ValueError:
+                if name or acct is None:
+                    continue
+            else:
+                if phone is None or phone == "":
+                    phone = "No phone"
+                if em is None or em == "":
+                    em = "No email"
+                if loc is None or loc == "":
+                    loc = "No location"
+            subscribers.add(
+                f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n"
+            )
+        for sub in subscribers:
+            yield sub
+
     def light(self, port: str) -> tuple[list, str]:
         from calix.cx_detail import cx
         from calix.ont_detail import ont
@@ -78,10 +121,10 @@ class CalixE9:
         )
         return critical.split("\n")
 
-    def description(self, port: str) -> str:
+    def description(self, port: str, external: str) -> str:
         try:
             desc = self.connection.send_command_timing(
-                f"show interface ethernet {port} status | include description",
+                f"show interface {external} {port} status | include description",
                 strip_prompt=True,
             ).split()[1]
         except IndexError:
