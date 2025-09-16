@@ -70,7 +70,7 @@ class CalixE9:
                 )
                 port = ont_info.get("linked-pon")
                 fibers = CalixE9.description(self, port, "pon")
-            except ValueError:
+            except (ValueError, TypeError):
                 if name or acct is None:
                     continue
             else:
@@ -110,6 +110,26 @@ class CalixE9:
                 f"{AQUA}{sn}{YELLOW}{float(us_light):>10.2f}{YELLOW}{us_ber:>10}{GREEN}{distance / 1000:>10.1f}km{ROSE}{name:>30}\n"
             )
         return subs, f"{ORANGE}{module_len}"
+
+    def alrm_dying(self) -> list:
+        from re import search
+
+        dying = self.connection.send_command_timing("show alarm active | inc dying")
+        match_ont = (search("'[0-9]{2,5}'", ont) for ont in dying.split("\n"))
+        ont_ids = [
+            m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
+        ]
+        return ont_ids
+
+    def alrm_miss(self) -> list:
+        from re import search
+
+        missing = self.connection.send_command_timing("show alarm active | inc missing")
+        match_ont = (search("'[0-9]{2,5}'", ont) for ont in missing.split("\n"))
+        ont_ids = [
+            m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
+        ]
+        return ont_ids
 
     def alrm_maj(self) -> list:
         major = self.connection.send_command_timing("show alarm active | inc MAJOR")
