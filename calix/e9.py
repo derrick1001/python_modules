@@ -1,5 +1,4 @@
 from netmiko import ConnectHandler
-from typing import Generator
 
 
 class CalixE9:
@@ -50,13 +49,15 @@ class CalixE9:
         ).split()[1::2]
         return ont_ids
 
-    def subs(self, onts: list) -> Generator:
+    def subs(self, onts: list) -> set:
         from calix.cx_detail import cx
         from calix.ont_detail import ont
 
         subscribers = set()
         for id in onts:
             cx_info = cx(self.name, id)
+            if cx_info is None:
+                continue
             ont_info = ont(self.name, id)
             try:
                 name = cx_info.get("name")
@@ -68,11 +69,8 @@ class CalixE9:
                     + ", "
                     + cx_info.get("locations")[0].get("address")[0].get("city")
                 )
-                port = ont_info.get("linked-pon")
-                fibers = CalixE9.description(self, port, "pon")
-            except (ValueError, TypeError):
-                if name or acct is None:
-                    continue
+            except TypeError:
+                pass
             else:
                 if phone is None or phone == "":
                     phone = "No phone"
@@ -80,11 +78,12 @@ class CalixE9:
                     em = "No email"
                 if loc is None or loc == "":
                     loc = "No location"
+            port = ont_info.get("linked-pon")
+            fibers = CalixE9.description(self, port, "pon")
             subscribers.add(
                 f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n"
             )
-        for sub in subscribers:
-            yield sub
+        return subscribers
 
     def light(self, port: str) -> tuple[list, str]:
         from calix.cx_detail import cx
@@ -121,7 +120,7 @@ class CalixE9:
         ]
         return ont_ids
 
-    def alrm_miss(self) -> list:
+    def alrm_missing(self) -> list:
         from re import search
 
         missing = self.connection.send_command_timing("show alarm active | inc missing")
