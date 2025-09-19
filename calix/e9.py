@@ -29,7 +29,15 @@ class CalixE9:
         return run_cmds
 
     @staticmethod
-    def ssp(shelf: str, slot="", port="") -> list[str]:
+    def pon_range(shelf: str, slot="", port="") -> list[str]:
+        """
+        Params:
+        shelf: int 2-5
+        slot: str 1-2
+        port: str 1-32
+
+        When calling ssp, use an empty string for slot if you need a range across both slots
+        """
         if slot == "":
             slot_range = range(1, 3)
         else:
@@ -40,6 +48,34 @@ class CalixE9:
             port_range = range(1, 17)
         ranges = [
             f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range
+        ]
+        return ranges
+
+    @staticmethod
+    def eth_range(eth_type: str, slot="", port="") -> list[str]:
+        """
+        Params:
+        eth_type: "q", "g", "x"
+        slot: str 1-2
+        port: str 1-9
+        """
+        shelf = 1
+        if slot == "":
+            slot_range = range(1, 3)
+        else:
+            slot_range = slot
+        if "-" in port:
+            port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1)
+        else:
+            match eth_type:
+                case "x":
+                    port_range = range(1, 9)
+                case "g" | "q":
+                    port_range = range(1, 3)
+        ranges = [
+            f"{shelf}/{slot}/{eth_type}{port}"
+            for slot in slot_range
+            for port in port_range
         ]
         return ranges
 
