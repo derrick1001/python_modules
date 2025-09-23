@@ -8,7 +8,12 @@ def email(subj: str, cont) -> None:
     msg["Subject"] = subj
     msg["From"] = "nms@mycvecfiber.com"
     msg["To"] = "dishman@cvecfiber.com"
-    if "PON" not in subj:
+    if "CRITICAL" in subj:
+        msg["Cc"] = [
+            "jknight@cvecfiber.com",
+            "jailey@cvecfiber.com",
+        ]
+    elif "PON" not in subj:
         msg["Cc"] = [
             "kmarshala@cvecfiber.com",
             "jjackson@cvecfiber.com",
