@@ -7,18 +7,14 @@ def email(subj: str, cont) -> None:
     msg.set_content(cont)
     msg["Subject"] = subj
     msg["From"] = "nms@mycvecfiber.com"
-    msg["To"] = "dishman@cvecfiber.com"
+    msg["To"] = "techs@mycvecfiber.com"
     if "CRITICAL" in subj:
         msg["Cc"] = [
             "jknight@cvecfiber.com",
             "jailey@cvecfiber.com",
         ]
     elif "PON" not in subj:
-        msg["Cc"] = [
-            "kmarshala@cvecfiber.com",
-            "jjackson@cvecfiber.com",
-            "jailey@cvecfiber.com",
-        ]
+        msg["Cc"] = ["kmarshala@cvecfiber.com", "jjackson@cvecfiber.com"]
     s = smtplib.SMTP("10.20.17.31")
     s.send_message(msg)
     s.quit()
