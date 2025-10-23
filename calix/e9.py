@@ -135,6 +135,10 @@ class CalixE9:
         subs = []
         for onts in ont_ids:
             cx_info = cx(self.name, onts)
+            try:
+                name = cx_info.get("name")
+            except AttributeError:
+                continue
             ont_info = ont(self.name, onts)
             name = cx_info.get("name")
             sn = ont_info.get("serial-number")
