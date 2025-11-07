@@ -115,6 +115,7 @@ class CalixE9:
                 if loc is None or loc == "":
                     loc = "No location"
             port = ont_info.get("linked-pon")
+            self.connection.send_command_timing("configure")
             fibers = CalixE9.description(self, port, "pon")
             subscribers.add(
                 f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n"
@@ -184,7 +185,7 @@ class CalixE9:
     def description(self, port: str, external: str) -> str:
         try:
             desc = self.connection.send_command_timing(
-                f"show interface {external} {port} status | include description",
+                f"show full int {external} {port} | inc description",
                 strip_prompt=True,
             ).split()[1]
         except IndexError:
