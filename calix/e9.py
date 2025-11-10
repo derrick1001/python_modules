@@ -29,21 +29,35 @@ class CalixE9:
         return run_cmds
 
     @staticmethod
-    def pon_range(shelf: str, slot="", port="") -> list[str]:
+    def fiber_range(start: int, end: int, inc_12: bool = None):
+        if inc_12 is None:
+            fibers = (fiber for fiber in range(start, end + 1) if fiber % 12 != 0)
+        elif inc_12 is True:
+            fibers = (fiber for fiber in range(start, end + 1))
+        return fibers
+
+    @staticmethod
+    def pon_range(shelf: str, slot="", port="", odd=False) -> list[str]:
         """
         Params:
-        shelf: int 2-5
+        shelf: int 1-5
         slot: str 1-2
         port: str 1-32
+        odd: bool (default=False)
 
         When calling ssp, use an empty string for slot if you need a range across both slots
+
+        odd=True - Returns given range with step 2
         """
         if slot == "":
             slot_range = range(1, 3)
         else:
             slot_range = slot
-        if "-" in port:
+        if "-" in port and odd is False:
             port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1)
+        elif "-" and odd is True:
+            port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1, 2)
+
         else:
             port_range = range(1, 17)
         ranges = [
@@ -183,7 +197,12 @@ class CalixE9:
         return critical.split("\n")
 
     def description(self, port: str, external: str) -> str:
+        """
+        External is the interface type
+        ex: "pon", "ethernet", "lag", etc.
+        """
         try:
+            self.connection.send_command_timing("configure")
             desc = self.connection.send_command_timing(
                 f"show full int {external} {port} | inc description",
                 strip_prompt=True,
