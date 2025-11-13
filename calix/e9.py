@@ -37,17 +37,19 @@ class CalixE9:
         return fibers
 
     @staticmethod
-    def pon_range(shelf: str, slot="", port="", odd=False) -> list[str]:
+    def pon_range(shelf: str, slot="", port="", odd=False, extend=None) -> list[str]:
         """
         Params:
         shelf: int 1-5
         slot: str 1-2
         port: str 1-32
         odd: bool (default=False)
+        extend: list
 
         When calling ssp, use an empty string for slot if you need a range across both slots
 
         odd=True - Returns given range with step 2
+        extend=list - adds this list to the original list before returning (ex: ranges += extend)
         """
         if slot == "":
             slot_range = range(1, 3)
@@ -63,7 +65,11 @@ class CalixE9:
         ranges = [
             f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range
         ]
-        return ranges
+        if extend is not None:
+            ranges += extend
+            return ranges
+        else:
+            return ranges
 
     @staticmethod
     def eth_range(eth_type: str, slot="", port="") -> list[str]:
