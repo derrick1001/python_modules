@@ -165,6 +165,10 @@ class CalixE9:
             sn = ont_info.get("serial-number")
             distance = ont_info.get("range-length")
             us_light = ont_info.get("ne-opt-signal-level")
+            try:
+                float(us_light)
+            except ValueError:
+                us_light = 0.00
             us_ber = ont_info.get("us-sdber-rate")
             us_err = ont_info.get("us-bip-errors")
             subs.append(
