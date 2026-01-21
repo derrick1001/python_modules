@@ -16,22 +16,26 @@ class CalixE9:
 
     def backup(self, remote_path: str, passwd: str) -> None:
         cmds = [
-            f"copy config from startup-config to {self.name}.xml\nupload file config from-file {self.name}.xml to-URI scp://{remote_path} password {passwd}"
+            f"copy config from startup-config to {self.name}.xml\nupload file config from-file {
+                self.name}.xml to-URI scp://{remote_path} password {passwd}"
         ]
         run_cmds = self.connection.send_command_timing(cmds[0])
         return run_cmds
 
     def count_subs_port(self, port: str) -> int:
-        cmd = f"show int pon {port} subscriber-info | notab | inc subscriber-id | count"
+        cmd = f"show int pon {
+            port} subscriber-info | notab | inc subscriber-id | count"
         run_cmds = int(
-            self.connection.send_command_timing(cmd, strip_prompt=True).split()[1]
+            self.connection.send_command_timing(
+                cmd, strip_prompt=True).split()[1]
         )
         return run_cmds
 
     @staticmethod
     def fiber_range(start: int, end: int, inc_12: bool = None):
         if inc_12 is None:
-            fibers = (fiber for fiber in range(start, end + 1) if fiber % 12 != 0)
+            fibers = (fiber for fiber in range(
+                start, end + 1) if fiber % 12 != 0)
         elif inc_12 is True:
             fibers = (fiber for fiber in range(start, end + 1))
         return fibers
@@ -56,9 +60,11 @@ class CalixE9:
         else:
             slot_range = slot
         if "-" in port and odd is False:
-            port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1)
+            port_range = range(
+                int(port.split("-")[0]), int(port.split("-")[1]) + 1)
         elif "-" and odd is True:
-            port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1, 2)
+            port_range = range(
+                int(port.split("-")[0]), int(port.split("-")[1]) + 1, 2)
 
         else:
             port_range = range(1, 17)
@@ -85,7 +91,8 @@ class CalixE9:
         else:
             slot_range = slot
         if "-" in port:
-            port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1)
+            port_range = range(
+                int(port.split("-")[0]), int(port.split("-")[1]) + 1)
         else:
             match eth_type:
                 case "x":
@@ -118,10 +125,13 @@ class CalixE9:
             try:
                 name = cx_info.get("name")
                 acct = cx_info.get("customId")
-                phone = cx_info.get("locations")[0].get("contacts")[0].get("phone")
-                em = cx_info.get("locations")[0].get("contacts")[0].get("email")
+                phone = cx_info.get("locations")[0].get(
+                    "contacts")[0].get("phone")
+                em = cx_info.get("locations")[0].get(
+                    "contacts")[0].get("email")
                 loc = (
-                    cx_info.get("locations")[0].get("address")[0].get("streetLine1")
+                    cx_info.get("locations")[0].get(
+                        "address")[0].get("streetLine1")
                     + ", "
                     + cx_info.get("locations")[0].get("address")[0].get("city")
                 )
@@ -172,14 +182,16 @@ class CalixE9:
             us_ber = ont_info.get("us-sdber-rate")
             us_err = ont_info.get("us-bip-errors")
             subs.append(
-                f"{ROSE}{sn}{YELLOW}{float(us_light):>10.2f}{YELLOW}{us_ber:>10}{GREEN}{distance / 1000:>10.1f}km{RED}{us_err:>10}{AQUA}{name:>30}\n"
+                f"{ROSE}{sn}{YELLOW}{float(us_light):>10.2f}{YELLOW}{us_ber:>10}{GREEN}{
+                    distance / 1000:>10.1f}km{RED}{us_err:>10}{AQUA}{name:>30}\n"
             )
         return subs, f"{ORANGE}{module_len}"
 
     def alrm_dying(self) -> list:
         from re import search
 
-        dying = self.connection.send_command_timing("show alarm active | inc dying")
+        dying = self.connection.send_command_timing(
+            "show alarm active | inc dying")
         match_ont = (search("'[0-9]{2,5}'", ont) for ont in dying.split("\n"))
         ont_ids = [
             m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
@@ -189,15 +201,18 @@ class CalixE9:
     def alrm_missing(self) -> list:
         from re import search
 
-        missing = self.connection.send_command_timing("show alarm active | inc missing")
-        match_ont = (search("'[0-9]{2,5}'", ont) for ont in missing.split("\n"))
+        missing = self.connection.send_command_timing(
+            "show alarm active | inc missing")
+        match_ont = (search("'[0-9]{2,5}'", ont)
+                     for ont in missing.split("\n"))
         ont_ids = [
             m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None
         ]
         return ont_ids
 
     def alrm_maj(self) -> list:
-        major = self.connection.send_command_timing("show alarm active | inc MAJOR")
+        major = self.connection.send_command_timing(
+            "show alarm active | inc MAJOR")
         return major.split("\n")
 
     def alrm_crit(self) -> list:
