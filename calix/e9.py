@@ -1,5 +1,5 @@
 from netmiko import ConnectHandler
-from calix.auth import username, password
+from calix.auth import e9_user, password
 
 
 class CalixE9:
@@ -9,7 +9,7 @@ class CalixE9:
         self.device = {
             "device_type": "cisco_ios",
             "host": self.ip,
-            "username": username,
+            "username": e9_user,
             "password": password,
             "fast_cli": False,
         }
