@@ -2,3 +2,4 @@ __pycache__/*.pyc
 calix/__pycache__/*.pyc
 plume/__pycache__/*.pyc
 calix/auth.py
+juniper/auth.py

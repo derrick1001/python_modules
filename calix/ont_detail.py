@@ -1,5 +1,7 @@
 from requests import get
 
+from calix.auth import username, password
+
 
 def ont(e9: str, ont_id: str):
     """
@@ -14,7 +16,7 @@ def ont(e9: str, ont_id: str):
     ont_detail = get(
         f"https://10.20.7.10:18443/rest/v1/performance/device/{
             e9}/ont/{ont_id}/status",
-        auth=("admin", "Thesearethetimes!"),
+        auth=(username, password),
         verify=False,
     )
     if isinstance(ont_detail.json(), list):

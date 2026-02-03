@@ -1,5 +1,7 @@
 from netmiko import ConnectHandler
 
+from juniper.auth import username, key_file
+
 
 class MX:
     def __init__(self, ip: str, name: str):
@@ -8,9 +10,9 @@ class MX:
         self.device = {
             "device_type": "juniper_junos",
             "host": self.ip,
-            "username": "derrick",
+            "username": username,
             "use_keys": True,
-            "key_file": "/home/derrick/.ssh/cvec_ed25519",
+            "key_file": key_file,
             "fast_cli": False,
         }
         self.connection = ConnectHandler(**self.device)
