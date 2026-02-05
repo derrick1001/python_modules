@@ -23,8 +23,3 @@ def cx(e9: str, ont_id: str) -> dict:
         return cx_detail.json()
     else:
         return
-    # cx_detail = get(
-    #    f"https://10.20.7.10:18443/rest/v1/ems/subscriber/device/{e9}/port/{ont_id}%2FG1",
-    #    auth=("admin", "Thesearethetimes!"),
-    #    verify=False,
-    # )
