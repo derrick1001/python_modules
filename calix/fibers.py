@@ -16,11 +16,7 @@ def get_fibers(pon_port: list):
     fibers = []
     for port in pon_port:
         try:
-            fibers.append(
-                cnct.send_command_timing(
-                    f"show full-configuration interface pon {port} | inc description"
-                ).split()[1]
-            )
+            fibers.append(cnct.send_command_timing(f"show full-configuration interface pon {port} | inc description").split()[1])
             # fibers = [
             #    cnct.send_command_timing(
             #        f"show full-configuration interface pon {port} | inc description"

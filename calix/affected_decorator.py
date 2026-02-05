@@ -25,11 +25,7 @@ def affected_decorator(func):
                     acct = sub.get("customId")
                     phone = sub.get("locations")[0].get("contacts")[0].get("phone")
                     em = sub.get("locations")[0].get("contacts")[0].get("email")
-                    loc = (
-                        sub.get("locations")[0].get("address")[0].get("streetLine1")
-                        + ", "
-                        + sub.get("locations")[0].get("address")[0].get("city")
-                    )
+                    loc = (sub.get("locations")[0].get("address")[0].get("streetLine1")+ ", "+ sub.get("locations")[0].get("address")[0].get("city"))
                 except Exception:
                     if name or acct is None:
                         continue
