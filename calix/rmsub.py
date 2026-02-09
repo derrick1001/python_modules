@@ -1,6 +1,6 @@
 from requests import delete
 
-from calix.auth import username, password
+from auth import username, password
 
 
 def rmsub(acct: str):

@@ -1,7 +1,7 @@
 from sys import argv
 from netmiko import ConnectHandler
 
-from calix.auth import e9_user, password
+from auth import e9_user, password
 
 
 # NOTE: Returns connection object

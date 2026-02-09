@@ -1,6 +1,6 @@
 from requests import get
 
-from calix.auth import username, password
+from auth import username, password
 
 
 def subs(e9, ont_id):

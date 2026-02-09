@@ -2,7 +2,7 @@
 
 from requests import post
 
-from calix.auth import username, password
+from auth import username, password
 
 
 def mk_ont(e9: str, **kwargs):

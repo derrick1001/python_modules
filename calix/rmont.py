@@ -2,7 +2,7 @@
 
 from requests import delete
 
-from calix.auth import username, password
+from auth import username, password
 
 
 def rmont(id: str, e9: str):

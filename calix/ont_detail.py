@@ -1,6 +1,6 @@
 from requests import get
 
-from calix.auth import username, password
+from auth import username, password
 
 
 def ont(e9: str, ont_id: str):
