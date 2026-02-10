@@ -1,7 +1,7 @@
 from sys import argv
 from netmiko import ConnectHandler
 
-from auth import e9_user, password
+from auth import e9_user, e9_pass
 
 
 # NOTE: Returns connection object
@@ -22,7 +22,7 @@ def calix_e9():
         "device_type": "cisco_ios",
         "host": f"{argv[1]}",
         "username": e9_user,
-        "password": password,
+        "password": e9_pass,
         "fast_cli": False,
     }
     return ConnectHandler(**device)
