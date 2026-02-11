@@ -17,6 +17,21 @@ VIOLET = f"{Fore.rgb(128, 0, 255)}{BOLD}"
 ROSE = f"{Fore.rgb(255, 128, 192)}{BOLD}"
 AQUA = f"{Fore.rgb(0, 255, 255)}{BOLD}"
 
+# Catppuccin Colors
+PINK = f"{Fore.rgb(245, 194, 231)}{BOLD}"
+MAUVE = f"{Fore.rgb(203, 166, 247)}{BOLD}"
+RED = f"{Fore.rgb(243, 139, 168)}{BOLD}"
+MAROON = f"{Fore.rgb(235, 160, 172)}{BOLD}"
+PEACH = f"{Fore.rgb(250, 179, 135)}{BOLD}"
+YELLOW = f"{Fore.rgb(249, 226, 175)}{BOLD}"
+GREEN = f"{Fore.rgb(166, 227, 161)}{BOLD}"
+TEAL = f"{Fore.rgb(148, 226, 213)}"
+SKY = f"{Fore.rgb(137, 220, 235)}{BOLD}"
+SAPPHIRE = f"{Fore.rgb(116, 199, 236)}{BOLD}"
+BLUE = f"{Fore.rgb(137, 180, 250)}{BOLD}"
+LAVENDER = f"{Fore.rgb(180, 190, 254)}{BOLD}"
+TEXT = f"{Fore.rgb(205, 214, 244)}{BOLD}"
+
 
 def setup(tube: str) -> None:
     # NOTE:
