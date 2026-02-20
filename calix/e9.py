@@ -102,8 +102,7 @@ class CalixE9:
         return ranges
 
     def onts(self, port: str) -> list[str]:
-        ont_ids = self.connection.send_command_timing(
-            f"sh int pon {port} ranged-onts statistics | inc ont-id").split()[1::2]
+        ont_ids = self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2]
         return ont_ids
 
     def subs(self, onts: list) -> set:
