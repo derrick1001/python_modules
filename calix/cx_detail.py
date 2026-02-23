@@ -1,6 +1,6 @@
 from requests import get
 
-from auth import username, password
+from calix.auth import username, password
 
 
 def cx(e9: str, ont_id: str) -> dict:

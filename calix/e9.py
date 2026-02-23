@@ -1,17 +1,32 @@
 from netmiko import ConnectHandler
+from typing import Union
+
+from calix.auth import e9_pass, e9_user
 
 
 class CalixE9:
-    def __init__(self, ip: str, name: str):
-        self.ip = ip
-        self.name = name
-        self.device = {
-            "device_type": "cisco_ios",
-            "host": self.ip,
-            "username": "sysadmin",
-            "password": "Thesearethetimes!",
-            "fast_cli": False,
-        }
+    def __init__(self, ip: str | tuple[str, str], name: str | None = None):
+        if name is None:
+            IP, NAME = ip
+            self.ip = IP
+            self.name = NAME
+            self.device = {
+                "device_type": "cisco_ios",
+                "host": self.ip,
+                "username": e9_user,
+                "password": e9_pass,
+                "fast_cli": False,
+            }
+        else:
+            self.ip = ip
+            self.name = name
+            self.device = {
+                "device_type": "cisco_ios",
+                "host": self.ip,
+                "username": e9_user,
+                "password": e9_pass,
+                "fast_cli": False,
+            }
         self.connection = ConnectHandler(**self.device)
 
     def backup(self, remote_path: str, passwd: str) -> None:
@@ -88,11 +103,26 @@ class CalixE9:
         ranges = [f"{shelf}/{slot}/{eth_type}{port}"for slot in slot_range for port in port_range]
         return ranges
 
-    def onts(self, port: str) -> list[str]:
-        ont_ids = self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2]
+    def get_onts_on_port(self, port: Union[str, list]) -> list[str]:
+        """
+        Params:
+        port: str or list
+
+        Description:
+        Returns a list of all ONT ids on given port, if port is of type list, will return a single list of all ids from all ports in that list
+        """
+        if isinstance(port, str):
+            ont_ids = self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2]
+        elif isinstance(port, list):
+            ont_ids = []
+            for ports in port:
+                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2])
+
+        else:
+            TypeError
         return ont_ids
 
-    def subs(self, onts: list) -> set:
+    def get_subs(self, onts: list) -> set:
         from calix.cx_detail import cx
         from calix.ont_detail import ont
 
