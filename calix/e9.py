@@ -137,6 +137,8 @@ class CalixE9:
             acct = cx_info.get("customId")
             phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
             em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
+            if em == "":
+                em = "No email"
             try:
                 loc = (cx_info.get("locations")[0].get("address")[0].get("streetLine1") + ", " + cx_info.get("locations")[0].get("address")[0].get("city"))
             except TypeError:
