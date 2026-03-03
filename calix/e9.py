@@ -133,21 +133,14 @@ class CalixE9:
             if cx_info is None:
                 continue
             ont_info = ont(self.name, id)
+            name = cx_info.get("name")
+            acct = cx_info.get("customId")
+            phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
+            em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
             try:
-                name = cx_info.get("name")
-                acct = cx_info.get("customId")
-                phone = cx_info.get("locations")[0].get("contacts")[0].get("phone")
-                em = cx_info.get("locations")[0].get("contacts")[0].get("email")
                 loc = (cx_info.get("locations")[0].get("address")[0].get("streetLine1") + ", " + cx_info.get("locations")[0].get("address")[0].get("city"))
             except TypeError:
-                pass
-            else:
-                if phone is None or phone == "":
-                    phone = "No phone"
-                if em is None or em == "":
-                    em = "No email"
-                if loc is None or loc == "":
-                    loc = "No location"
+                loc = "No location"
             port = ont_info.get("linked-pon")
             self.connection.send_command_timing("configure")
             fibers = CalixE9.description(self, port, "pon")
