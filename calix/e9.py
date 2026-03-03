@@ -1,5 +1,6 @@
-from netmiko import ConnectHandler
 from typing import Union
+from time import sleep
+from netmiko import ConnectHandler
 
 from calix.auth import e9_pass, e9_user
 
@@ -119,7 +120,7 @@ class CalixE9:
                 ont_ids.extend(self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2])
 
         else:
-            TypeError
+            raise TypeError
         return ont_ids
 
     def get_subs(self, onts: list) -> set:
@@ -224,3 +225,8 @@ class CalixE9:
         m = (search("1/[1-2]/q[1-2]", port) for port in alarm if "loss-of-signal" in port)
         ports = [port.group() for port in m]
         return ports
+
+    def pcap(self, interface: str, expr: str, remote_dst: str, filename: str):
+        while True:
+            print(self.connection.send_command_timing(f"tcpdump external-interface ont-ethernet {interface} file {filename} options {expr}", normalize=False))
+            sleep(1)
