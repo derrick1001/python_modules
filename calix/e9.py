@@ -136,13 +136,12 @@ class CalixE9:
             name = cx_info.get("name")
             acct = cx_info.get("customId")
             phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
-            em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
-            if em == "":
+            if cx_info.get("locations")[0].get("contacts")[0].get("email") == "":
                 em = "No email"
-            try:
-                loc = (cx_info.get("locations")[0].get("address")[0].get("streetLine1") + ", " + cx_info.get("locations")[0].get("address")[0].get("city"))
-            except TypeError:
+            if cx_info.get('locations')[0].get('address')[0].get('streetLine1') or cx_info.get('locations')[0].get('address')[0].get('city') == "":
                 loc = "No location"
+            em = cx_info.get("locations")[0].get("contacts")[0].get("email")
+            loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1')},{cx_info.get('locations')[0].get('address')[0].get('city')}'
             port = ont_info.get("linked-pon")
             self.connection.send_command_timing("configure")
             fibers = CalixE9.description(self, port, "pon")
