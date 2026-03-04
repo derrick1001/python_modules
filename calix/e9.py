@@ -194,6 +194,14 @@ class CalixE9:
         ont_ids = [m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None]
         return ont_ids
 
+    def alrm_loss_of_pon(self) -> list:
+        from re import search
+
+        lop = self.connection.send_command_timing("show alarm active | inc loss-of-pon")
+        match_pon = (search("[2-5]/[1-2]/xp[0-9]{1,2}", port) for port in lop.split("\n"))
+        ont_ids = (self.get_onts_on_port(m.group().lstrip("'").rstrip("'")) for m in match_pon if m is not None)
+        return ont_ids
+
     def alrm_maj(self) -> list:
         major = self.connection.send_command_timing("show alarm active | inc MAJOR")
         return major.split("\n")
