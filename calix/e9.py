@@ -138,10 +138,12 @@ class CalixE9:
             phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
             if cx_info.get("locations")[0].get("contacts")[0].get("email") == "":
                 em = "No email"
+            else:
+                em = cx_info.get("locations")[0].get("contacts")[0].get("email")
             if cx_info.get('locations')[0].get('address')[0].get('streetLine1') or cx_info.get('locations')[0].get('address')[0].get('city') == "":
                 loc = "No location"
-            em = cx_info.get("locations")[0].get("contacts")[0].get("email")
-            loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1')},{cx_info.get('locations')[0].get('address')[0].get('city')}'
+            else:
+                loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1')},{cx_info.get('locations')[0].get('address')[0].get('city')}'
             port = ont_info.get("linked-pon")
             self.connection.send_command_timing("configure")
             fibers = CalixE9.description(self, port, "pon")
