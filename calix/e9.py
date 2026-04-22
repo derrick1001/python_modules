@@ -115,10 +115,10 @@ class CalixE9:
         if isinstance(port, str):
             ont_ids = self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2]
         elif isinstance(port, list):
-            ont_ids = set()
+            ont_ids = []
             for ports in port:
-                ont_ids.add(self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2])
-
+                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2])
+            ont_ids = set(ont_ids)
         else:
             raise TypeError
         return ont_ids
