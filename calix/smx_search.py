@@ -1,6 +1,6 @@
 from requests import get
 
-from auth import username, password
+from calix.auth import username, password
 
 
 def search_all(value: str):
