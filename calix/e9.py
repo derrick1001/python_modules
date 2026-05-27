@@ -115,17 +115,17 @@ class CalixE9:
         Returns a set of all ONT ids on given port, if port is of type list, will return a single list of all ids from all ports in that list
         """
         if isinstance(ports, str):
-            ont_ids = self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2]
+            ont_ids = self.connection.send_command_timing(f"show interface pon {ports} subscriber-info | csv | inc 17000".split()[1::5])
         elif isinstance(ports, list):
             ont_ids = []
             for port in ports:
-                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2])
+                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {ports} subscriber-info | csv | inc 17000").split()[1::5])
             ont_ids = set(ont_ids)
         else:
             raise TypeError
         return ont_ids
 
-    def get_subs(self, onts: list) -> set:
+    def get_subs(self, onts: list, no_description=False) -> set:
         from calix.cx_detail import cx
         from calix.ont_detail import ont
 
@@ -143,23 +143,11 @@ class CalixE9:
             port = ont_info.get("linked-pon")
             self.connection.send_command_timing("configure")
             fibers = CalixE9.description(self, port, "pon")
-            subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
-        return subscribers
-
-    def get_email(self, onts: list) -> set:
-        from calix.cx_detail import cx
-
-        subscribers = set()
-        for id in onts:
-            cx_info = cx(self.name, id)
-            if cx_info is None:
-                continue
-            name = cx_info.get("name")
-            acct = cx_info.get("customId")
-            phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
-            em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
-            loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1', 'No location')},{cx_info.get('locations')[0].get('address')[0].get('city', 'No location')}'
-            subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n")
+            match no_description:
+                case True:
+                    subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n")
+                case False:
+                    subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
         return subscribers
 
     def light(self, port: str) -> tuple[list, str]:
