@@ -71,6 +71,8 @@ class CalixE9:
             port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1)
         elif "-" and odd is True:
             port_range = range(int(port.split("-")[0]), int(port.split("-")[1]) + 1, 2)
+        elif port != "":
+            port_range = [port]
         else:
             port_range = range(1, 17)
         ranges = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
@@ -104,20 +106,20 @@ class CalixE9:
         ranges = [f"{shelf}/{slot}/{eth_type}{port}"for slot in slot_range for port in port_range]
         return ranges
 
-    def get_onts_on_port(self, port: Union[str, list]) -> list[str]:
+    def get_active_onts(self, ports: Union[str, list]) -> set[str]:
         """
         Params:
         port: str or list
 
         Description:
-        Returns a list of all ONT ids on given port, if port is of type list, will return a single list of all ids from all ports in that list
+        Returns a set of all ONT ids on given port, if port is of type list, will return a single list of all ids from all ports in that list
         """
-        if isinstance(port, str):
-            ont_ids = self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2]
-        elif isinstance(port, list):
+        if isinstance(ports, str):
+            ont_ids = self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2]
+        elif isinstance(ports, list):
             ont_ids = []
-            for ports in port:
-                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {ports} ranged-onts statistics | inc ont-id").split()[1::2])
+            for port in ports:
+                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {port} ranged-onts statistics | inc ont-id").split()[1::2])
             ont_ids = set(ont_ids)
         else:
             raise TypeError
