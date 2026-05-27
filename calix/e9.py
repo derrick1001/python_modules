@@ -16,7 +16,7 @@ class CalixE9:
                 "host": self.ip,
                 "username": e9_user,
                 "password": e9_pass,
-                "fast_cli": False,
+                "fast_cli": True,
             }
         else:
             self.ip = ip
@@ -26,7 +26,7 @@ class CalixE9:
                 "host": self.ip,
                 "username": e9_user,
                 "password": e9_pass,
-                "fast_cli": False,
+                "fast_cli": True,
             }
         self.connection = ConnectHandler(**self.device)
 
@@ -106,7 +106,7 @@ class CalixE9:
         ranges = [f"{shelf}/{slot}/{eth_type}{port}"for slot in slot_range for port in port_range]
         return ranges
 
-    def get_active_onts(self, ports: Union[str, list]) -> set[str]:
+    def get_onts(self, ports: Union[str, list]) -> list[str]:
         """
         Params:
         port: str or list
@@ -115,12 +115,11 @@ class CalixE9:
         Returns a set of all ONT ids on given port, if port is of type list, will return a single list of all ids from all ports in that list
         """
         if isinstance(ports, str):
-            ont_ids = self.connection.send_command_timing(f"show interface pon {ports} subscriber-info | csv | inc 17000".split()[1::5])
+            ont_ids = self.connection.send_command(f"show interface pon {ports} subscriber-info | csv | inc 17000".split(",")[1::5])
         elif isinstance(ports, list):
             ont_ids = []
             for port in ports:
-                ont_ids.extend(self.connection.send_command_timing(f"show interface pon {ports} subscriber-info | csv | inc 17000").split()[1::5])
-            ont_ids = set(ont_ids)
+                ont_ids.extend(self.connection.send_command(f"show interface pon {port} subscriber-info | csv | inc 17000").split(",")[1::5])
         else:
             raise TypeError
         return ont_ids
@@ -141,7 +140,6 @@ class CalixE9:
             em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
             loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1', 'No location')},{cx_info.get('locations')[0].get('address')[0].get('city', 'No location')}'
             port = ont_info.get("linked-pon")
-            self.connection.send_command_timing("configure")
             fibers = CalixE9.description(self, port, "pon")
             match no_description:
                 case True:
@@ -216,8 +214,7 @@ class CalixE9:
         ex: "pon", "ethernet", "lag", etc.
         """
         try:
-            self.connection.send_command_timing("configure")
-            desc = self.connection.send_command_timing(f"show full int {external} {port} | inc description", strip_prompt=True).split()[1]
+            desc = self.connection.send_command(f"show running-config int {external} {port} | inc description").split()[1]
         except IndexError:
             return "No description"
         return desc
