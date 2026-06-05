@@ -1,4 +1,3 @@
-from typing import Union
 from time import sleep
 from netmiko import ConnectHandler
 
@@ -106,7 +105,7 @@ class CalixE9:
         ranges = [f"{shelf}/{slot}/{eth_type}{port}"for slot in slot_range for port in port_range]
         return ranges
 
-    def get_onts(self, ports: Union[str, list]) -> list[str]:
+    def get_onts(self, ports: str | list) -> list[str]:
         """
         Params:
         port: str or list
