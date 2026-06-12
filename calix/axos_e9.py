@@ -44,3 +44,55 @@ wetumka = ("10.20.19.51", "Wetumka-E9-1")
 dustin = ("10.20.10.51", "Dustin-E9-1")
 hanna = ("10.20.8.51", "Hanna-E9-1")
 cvec = ("10.20.0.51", "CVEC-E9-1")
+
+
+def device(name: str) -> tuple:
+    """
+    This function was created to map the argv value passed to scripts to which device is needed
+    Returns the tuple value of (ip, name) for the given string
+    Ex: python3 get_missing.py chisney (the string 'chisney' will return the tuple value of chisney huts access
+    """
+
+    match name:
+        case "shawnee":
+            return shawnee
+        case "highland":
+            return highland
+        case "eufaula":
+            return eufaula
+        case "ingram":
+            return ingram
+        case "redhill":
+            return redhill
+        case "hazeldel":
+            return hazeldel
+        case "hammett":
+            return hammett
+        case "rossville":
+            return rossville
+        case "meeker":
+            return meeker
+        case "gardengrove":
+            return gardengrove
+        case "prague":
+            return prague
+        case "liberty":
+            return liberty
+        case "seminole":
+            return seminole
+        case "chisney":
+            return chisney
+        case "burnett":
+            return burnett
+        case "hazel":
+            return hazel
+        case "unitedclay":
+            return unitedclay
+        case "cromwell":
+            return cromwell
+        case "wetumka":
+            return wetumka
+        case "dustin":
+            return dustin
+        case "hanna":
+            return hanna

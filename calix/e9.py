@@ -115,6 +115,7 @@ class CalixE9:
         """
         if isinstance(ports, str):
             ont_ids = self.connection.send_command(f"show interface pon {ports} subscriber-info | csv | inc 17000".split(",")[1::5])
+            return ont_ids
         elif isinstance(ports, list):
             ont_ids = []
             for port in ports:
@@ -178,15 +179,23 @@ class CalixE9:
     def alrm_dying(self) -> list:
         from re import search
 
-        dying = self.connection.send_command_timing("show alarm active | inc dying")
+        dying = self.connection.send_command("show alarm active | inc dying")
         match_ont = (search("'[0-9]{2,5}'", ont) for ont in dying.split("\n"))
+        ont_ids = [m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None]
+        return ont_ids
+
+    def alrm_red_temp(self) -> list:
+        from re import search
+
+        red_temp = self.connection.send_command("show alarm active | inc red-temp")
+        match_ont = (search("'[0-9]{2,5}'", ont) for ont in red_temp.split("\n"))
         ont_ids = [m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None]
         return ont_ids
 
     def alrm_missing(self) -> list:
         from re import search
 
-        missing = self.connection.send_command_timing("show alarm active | inc missing")
+        missing = self.connection.send_command("show alarm active | inc missing")
         match_ont = (search("'[0-9]{2,5}'", ont) for ont in missing.split("\n"))
         ont_ids = [m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None]
         return ont_ids
@@ -194,17 +203,18 @@ class CalixE9:
     def alrm_loss_of_pon(self) -> list:
         from re import search
 
-        lop = self.connection.send_command_timing("show alarm active | inc loss-of-pon")
-        match_pon = (search("[2-5]/[1-2]/xp[0-9]{1,2}", port) for port in lop.split("\n"))
-        ont_ids = (self.get_onts_on_port(m.group().lstrip("'").rstrip("'")) for m in match_pon if m is not None)
+        lop = self.connection.send_command("show alarm active | inc loss-of-pon")
+        match_pon = [search("[2-5]/[1-2]/xp[0-9]{1,2}", port) for port in lop.split("\n") if "#" not in port]
+        ports = [m.group() for m in match_pon]
+        ont_ids = self.get_onts(ports)
         return ont_ids
 
     def alrm_maj(self) -> list:
-        major = self.connection.send_command_timing("show alarm active | inc MAJOR")
+        major = self.connection.send_command("show alarm active | inc MAJOR")
         return major.split("\n")
 
     def alrm_crit(self) -> list:
-        critical = self.connection.send_command_timing("show alarm active | inc CRITICAL")
+        critical = self.connection.send_command("show alarm active | inc CRITICAL")
         return critical.split("\n")
 
     def description(self, port: str, external: str) -> str:
