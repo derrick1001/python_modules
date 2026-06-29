@@ -35,8 +35,7 @@ class CalixE9:
         return run_cmds
 
     def count_subs_port(self, port: str) -> int:
-        cmd = f"show int pon {port} subscriber-info | notab | inc subscriber-id | count"
-        run_cmds = int(self.connection.send_command_timing(cmd, strip_prompt=True).split()[1])
+        run_cmds = int(self.connection.send_command(f"show int pon {port} subscriber-info | notab | inc subscriber-id | count").split()[1])
         return run_cmds
 
     @staticmethod
@@ -153,9 +152,11 @@ class CalixE9:
             match no_description:
                 case True:
                     subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n")
+                    continue
             match package:
                 case True:
                     subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n{pkg}\n")
+                    continue
             subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
         return subscribers
 
