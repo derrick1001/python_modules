@@ -124,7 +124,15 @@ class CalixE9:
             raise TypeError
         return ont_ids
 
-    def get_subs(self, onts: list, no_description=False) -> set:
+    def get_subs(self, onts: list, no_description=None, package=None) -> set:
+        """
+        Params:
+        ont: list
+        no_description: None optional
+        package: None optional
+
+        Pass in True value to the optional params to get their functionality
+        """
         from calix.cx_detail import cx
         from calix.ont_detail import ont
 
@@ -141,11 +149,14 @@ class CalixE9:
             loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1', 'No location')},{cx_info.get('locations')[0].get('address')[0].get('city', 'No location')}'
             port = ont_info.get("linked-pon")
             fibers = CalixE9.description(self, port, "pon")
+            pkg = self.connection.send_command(f"show running-config interface ont-ethernet {id}/x1 | inc policy-map").split()[1]
             match no_description:
                 case True:
                     subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n")
-                case False:
-                    subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
+            match package:
+                case True:
+                    subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n{pkg}\n")
+            subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
         return subscribers
 
     def light(self, port: str) -> tuple[list, str]:
