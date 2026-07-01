@@ -38,6 +38,7 @@ class CalixE9:
         run_cmds = int(self.connection.send_command(f"show int pon {port} subscriber-info | notab | inc subscriber-id | count").split()[1])
         return run_cmds
 
+    # TODO: Return a list instead of a generator object
     @staticmethod
     def fiber_range(start: int, end: int, inc_12: bool = None):
         if inc_12 is None:
@@ -47,7 +48,7 @@ class CalixE9:
         return fibers
 
     @staticmethod
-    def pon_range(shelf: str, slot="", port="", odd=False, extend=None) -> list[str]:
+    def pon_range(shelf: int, slot="", port="", odd=False, extend: list = None) -> list[str]:
         """
         Params:
         shelf: int 1-5
