@@ -38,13 +38,13 @@ class CalixE9:
         run_cmds = int(self.connection.send_command(f"show int pon {port} subscriber-info | notab | inc subscriber-id | count").split()[1])
         return run_cmds
 
-    # TODO: Return a list instead of a generator object
     @staticmethod
     def fiber_range(start: int, end: int, inc_12: bool = None):
-        if inc_12 is None:
-            fibers = (fiber for fiber in range(start, end + 1) if fiber % 12 != 0)
-        elif inc_12 is True:
-            fibers = (fiber for fiber in range(start, end + 1))
+        match inc_12:
+            case None:
+                fibers = (fiber for fiber in range(start, end + 1) if fiber % 12 != 0)
+            case True:
+                fibers = (fiber for fiber in range(start, end + 1))
         return fibers
 
     @staticmethod
