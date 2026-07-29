@@ -1,6 +1,6 @@
 from requests import delete
 
-from auth import username, password
+from calix.auth import username, password
 from calix.server import SMX
 
 

@@ -2,7 +2,7 @@
 
 from requests import post
 
-from auth import username, password
+from calix.auth import username, password
 from calix.server import SMX
 
 
