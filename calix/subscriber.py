@@ -1,7 +1,7 @@
 from requests import get
 
 from auth import username, password
-from server import SMX
+from calix.server import SMX
 
 
 def subs(e9, ont_id):

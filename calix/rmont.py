@@ -3,7 +3,7 @@
 from requests import delete
 
 from auth import username, password
-from server import SMX
+from calix.server import SMX
 
 
 def rmont(id: str, e9: str):

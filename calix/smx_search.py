@@ -1,7 +1,7 @@
 from requests import get
 
 from calix.auth import username, password
-from server import SMX
+from calix.server import SMX
 
 
 def search_all(value: str):

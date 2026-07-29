@@ -1,7 +1,7 @@
 from requests import delete
 
 from auth import username, password
-from server import SMX
+from calix.server import SMX
 
 
 def rmsub(acct: str):

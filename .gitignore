@@ -2,5 +2,6 @@ __pycache__/*.pyc
 calix/__pycache__/*.pyc
 plume/__pycache__/*.pyc
 calix/auth.py
+calix/server.py
 juniper/auth.py
 juniper/__pycache__/*.pyc

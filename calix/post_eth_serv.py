@@ -1,7 +1,7 @@
 from requests import post
 
 from auth import username, password
-from server import SMX
+from calix.server import SMX
 
 
 def mk_eth_serv(**kwargs):

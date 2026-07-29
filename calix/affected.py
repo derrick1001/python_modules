@@ -2,7 +2,7 @@ from requests import get
 
 from calix.cx_detail import cx
 from calix.auth import username, password
-from server import SMX
+from calix.server import SMX
 
 # NOTE:
 # This is the 'Subscribers' hyperlink under alarms
