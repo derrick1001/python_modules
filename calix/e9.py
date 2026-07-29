@@ -146,7 +146,7 @@ class CalixE9:
             acct = cx_info.get("customId")
             phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
             em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
-            loc = f'{cx_info.get('locations')[0].get('address')[0].get('streetLine1', 'No location')},{cx_info.get('locations')[0].get('address')[0].get('city', 'No location')}'
+            loc = f"{cx_info.get('locations')[0].get('address')[0].get('streetLine1', 'No location')},{cx_info.get('locations')[0].get('address')[0].get('city', 'No location')}"
             port = ont_info.get("linked-pon")
             fibers = CalixE9.description(self, port, "pon")
             pkg = self.connection.send_command(f"show running-config interface ont-ethernet {id}/x1 | inc policy-map").split()[1]
