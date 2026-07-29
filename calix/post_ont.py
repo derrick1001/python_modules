@@ -3,10 +3,11 @@
 from requests import post
 
 from auth import username, password
+from server import SMX
 
 
 def mk_ont(e9: str, **kwargs):
-    ont = post(f"https://10.20.7.10:18443/rest/v1/config/device/{e9}/ont",
+    ont = post(f"https://{SMX}:18443/rest/v1/config/device/{e9}/ont",
                auth=(username, password),
                verify=False,
                json=kwargs,

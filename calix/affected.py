@@ -2,6 +2,7 @@ from requests import get
 
 from calix.cx_detail import cx
 from calix.auth import username, password
+from server import SMX
 
 # NOTE:
 # This is the 'Subscribers' hyperlink under alarms
@@ -9,7 +10,7 @@ from calix.auth import username, password
 
 
 def affected(e9, instid):
-    response = get(f"https://10.20.7.10:18443/rest/v1/fault/export/csv/subscriber/device-name/{e9}/instance-id/{id}",
+    response = get(f"https://{SMX}:18443/rest/v1/fault/export/csv/subscriber/device-name/{e9}/instance-id/{id}",
                    auth=(username, password),
                    verify=False,
                    )

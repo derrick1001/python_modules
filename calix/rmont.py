@@ -3,6 +3,7 @@
 from requests import delete
 
 from auth import username, password
+from server import SMX
 
 
 def rmont(id: str, e9: str):
@@ -14,7 +15,7 @@ def rmont(id: str, e9: str):
     Returns nothing
     """
 
-    del_ont = delete(f"https://10.20.7.10:18443/rest/v1/config/device/{e9}/ont?ont-id={id}&force-delete=true",
+    del_ont = delete(f"https://{SMX}:18443/rest/v1/config/device/{e9}/ont?ont-id={id}&force-delete=true",
                      auth=(username, password),
                      verify=False,
                      )

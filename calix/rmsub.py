@@ -1,10 +1,11 @@
 from requests import delete
 
 from auth import username, password
+from server import SMX
 
 
 def rmsub(acct: str):
-    rm_sub = delete(f"https://10.20.7.10:18443/rest/v1/ems/subscriber/org/Calix/account/{acct}",
+    rm_sub = delete(f"https://{SMX}:18443/rest/v1/ems/subscriber/org/Calix/account/{acct}",
                     auth=(username, password),
                     verify=False,
                     )
