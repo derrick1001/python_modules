@@ -124,7 +124,7 @@ class CalixE9:
             raise TypeError
         return ont_ids
 
-    def get_subs(self, onts: list, no_description=None, package=None) -> set:
+    def get_subs(self, onts: list, no_description=None, package=None, email_only=None) -> set:
         """
         Params:
         ont: list
@@ -157,6 +157,10 @@ class CalixE9:
             match package:
                 case True:
                     subscribers.add(f"{acct}\n{name}\n{phone}\n{em}\n{loc}\n{pkg}\n")
+                    continue
+            match email_only:
+                case True:
+                    subscribers.add(f"{em}\n")
                     continue
             subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
         return subscribers
