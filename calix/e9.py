@@ -73,7 +73,7 @@ class CalixE9:
         elif port != "":
             port_range = [port]
         else:
-            port_range = range(1, 17)
+            port_range = range(1, 33)
         ranges = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
         if extend is not None:
             ranges += extend
