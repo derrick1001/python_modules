@@ -34,9 +34,15 @@ class CalixE9:
         run_cmds = self.connection.send_command_timing(cmds[0])
         return run_cmds
 
-    def count_subs_port(self, port: str) -> int:
-        run_cmds = int(self.connection.send_command(f"show int pon {port} subscriber-info | notab | inc subscriber-id | count").split()[1])
-        return run_cmds
+    def count_subs_port(self, ports: str | list) -> int:
+        if isinstance(ports, str):
+            count = int(self.connection.send_command(f"show int pon {ports} subscriber-info | notab | inc subscriber-id | count").split()[1])
+        if isinstance(ports, list):
+            count = 0
+            for port in ports:
+                counts = int(self.connection.send_command(f"show int pon {port} subscriber-info | notab | inc subscriber-id | count").split()[1])
+                count += counts
+        return count
 
     @staticmethod
     def fiber_range(start: int, end: int, inc_12: bool = None):
@@ -73,7 +79,7 @@ class CalixE9:
         elif port != "":
             port_range = [port]
         else:
-            port_range = range(1, 33)
+            port_range = range(1, 17)
         ranges = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
         if extend is not None:
             ranges += extend
