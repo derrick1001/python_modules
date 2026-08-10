@@ -44,6 +44,10 @@ class CalixE9:
                 count += counts
         return count
 
+    def card_type(self, shelf: int, slot: int) -> str:
+        card = self.connection.send_command(f"show card {shelf}/{slot} | notab | include provision-type").split()[1]
+        return card
+
     @staticmethod
     def fiber_range(start: int, end: int, inc_12: bool = None):
         match inc_12:
@@ -53,12 +57,11 @@ class CalixE9:
                 fibers = (fiber for fiber in range(start, end + 1))
         return fibers
 
-    @staticmethod
-    def pon_range(shelf: int, slot="", port="", odd=False, extend: list = None) -> list[str]:
+    def pon_range(self, shelf: int, slot=None, port="", odd=False, extend: list = None) -> list[str]:
         """
         Params:
         shelf: int 1-5
-        slot: str 1-2
+        slot: int 1 or 2
         port: str 1-32
         odd: bool (default=False)
         extend: list
@@ -68,7 +71,7 @@ class CalixE9:
         odd=True - Returns given range with step 2
         extend=list - adds this list to the original list before returning (ex: ranges += extend)
         """
-        if slot == "":
+        if slot is None:
             slot_range = range(1, 3)
         else:
             slot_range = slot
@@ -79,7 +82,17 @@ class CalixE9:
         elif port != "":
             port_range = [port]
         else:
-            port_range = range(1, 17)
+            if slot is None:
+                if self.card_type(self, shelf, 1) == "NG1601":
+                    port_range = range(1, 17)
+                    slot_1_range = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
+                if self.card_type(self, shelf, 2) == "XG3201":
+                    port_range = range(1, 33)
+                    slot_2_range = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
+                ranges = [*slot_1_range, *slot_2_range]
+                return ranges
+            else:
+                port_range = range(1, 33)
         ranges = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
         if extend is not None:
             ranges += extend
