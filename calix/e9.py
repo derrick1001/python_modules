@@ -181,7 +181,7 @@ class CalixE9:
                 case True:
                     subscribers.add(f"{em}\n")
                     continue
-            subscribers.append(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
+            subscribers.append(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n\n")
         return subscribers
 
     def light(self, port: str) -> tuple[list, str]:
