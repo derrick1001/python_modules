@@ -155,7 +155,7 @@ class CalixE9:
         from calix.cx_detail import cx
         from calix.ont_detail import ont
 
-        subscribers = set()
+        subscribers = []
         for id in onts:
             cx_info = cx(self.name, id)
             if cx_info is None:
@@ -181,7 +181,7 @@ class CalixE9:
                 case True:
                     subscribers.add(f"{em}\n")
                     continue
-            subscribers.add(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
+            subscribers.append(f"{acct}\n{name}\n{phone}\n{port} -> {fibers}\n{em}\n{loc}\n")
         return subscribers
 
     def light(self, port: str) -> tuple[list, str]:
