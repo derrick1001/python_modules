@@ -236,6 +236,14 @@ class CalixE9:
         ont_ids = [m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None]
         return ont_ids
 
+    def alrm_rogue(self) -> list:
+        from re import search
+
+        rogue = self.connection.send_command("show alarm active | inc rogue")
+        match_ont = (search("'[0-9]{2,5}'", ont) for ont in rogue.split("\n"))
+        ont_ids = [m.group().lstrip("'").rstrip("'") for m in match_ont if m is not None]
+        return ont_ids
+
     def alrm_loss_of_pon(self) -> list:
         from re import search
 
