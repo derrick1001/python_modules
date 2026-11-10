@@ -82,17 +82,16 @@ class CalixE9:
         elif port != "":
             port_range = [port]
         else:
-            if slot is None:
-                if self.card_type(self, shelf, 1) == "NG1601":
-                    port_range = range(1, 17)
-                    slot_1_range = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
-                if self.card_type(self, shelf, 2) == "XG3201":
-                    port_range = range(1, 33)
-                    slot_2_range = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
-                ranges = [*slot_1_range, *slot_2_range]
-                return ranges
-            else:
-                port_range = range(1, 33)
+            port_range = range(1, 33)
+            # if slot is None:
+            #     if self.card_type(shelf, 1) == "NG1601":
+            #         port_range = range(1, 17)
+            #         slot_1_range = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
+            #     if self.card_type(shelf, 2) == "XG3201":
+            #         port_range = range(1, 33)
+            #         slot_2_range = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
+            #     ranges = [*slot_1_range, *slot_2_range]
+            #     return ranges
         ranges = [f"{shelf}/{slot}/xp{port}" for slot in slot_range for port in port_range]
         if extend is not None:
             ranges += extend
@@ -165,6 +164,8 @@ class CalixE9:
             acct = cx_info.get("customId")
             phone = cx_info.get("locations")[0].get("contacts")[0].get("phone", "No phone")
             em = cx_info.get("locations")[0].get("contacts")[0].get("email", "No email")
+            if em is None or em == "":
+                em = "No email"
             loc = f"{cx_info.get('locations')[0].get('address')[0].get('streetLine1', 'No location')},{cx_info.get('locations')[0].get('address')[0].get('city', 'No location')}"
             port = ont_info.get("linked-pon")
             fibers = CalixE9.description(self, port, "pon")

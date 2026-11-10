@@ -96,3 +96,27 @@ def device(name: str) -> tuple:
             return dustin
         case "hanna":
             return hanna
+
+
+huts = ["shawnee",
+        "highland",
+        "eufaula",
+        "ingram",
+        "redhill",
+        "hazeldel",
+        "hammett",
+        "rossville",
+        "meeker",
+        "gardengrove",
+        "prague",
+        "liberty",
+        "seminole",
+        "chisney",
+        "burnett",
+        "hazel",
+        "unitedclay",
+        "cromwell",
+        "wetumka",
+        "dustin",
+        "hanna"
+        ]
